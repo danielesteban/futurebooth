@@ -1,0 +1,111 @@
+:root {
+  font-size: 16px;
+  width: 100vw;
+  height: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+canvas {
+  vertical-align: middle;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(#0a0a0a, 75%, #000);
+  color: #eee;
+  cursor: default;
+  user-select: none;
+  overflow: hidden;
+  font-family: 'Roboto Condensed', monospace;
+  font-size: 0.75rem;
+  line-height: 1.125rem;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: none;
+  overflow: hidden;
+}
+
+body, #app {
+  width: 100vw;
+  height: 100%;
+}
+
+#app {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+#info {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  text-align: right;
+}
+
+#grid, #grid > div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#grid {
+  width: 2580px;
+  min-height: 0;
+}
+
+#grid > div {
+  position: relative;
+  width: 516px;
+}
+
+#grid > div > div {
+  position: relative;
+  width: 256px;
+  height: 256px;
+  cursor: pointer;
+  border: 1px solid rgba(127, 127, 127, .25);
+}
+
+#grid > div > div::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#grid > div > div.loading::before {
+  backdrop-filter: blur(0.125rem);
+}
+
+#grid > div > div > img {
+  width: 100%;
+  height: 100%;
+}
+
+#grid > div > canvas {
+  border: 2px solid rgba(127, 127, 127, .25);
+}
+
+#grid > div > textarea {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  border: 0;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, .5);
+  backdrop-filter: blur(0.25rem);
+  outline: 0;
+  resize: none;
+  color: inherit;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}

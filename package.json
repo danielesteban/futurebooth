@@ -1,0 +1,28 @@
+{
+  "name": "futurebooth",
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "start": "pnpm build -w"
+  },
+  "type": "module",
+  "dependencies": {
+    "@danielesteban/diffusers": "^0.0.1",
+    "spin.js": "^4.1.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-html": "^1.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/gif.js": "^0.2.2",
+    "@types/three": "^0.149.0",
+    "postcss": "^8.4.21",
+    "rollup": "^3.19.1",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-serve": "^2.0.2",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
+  }
+}
