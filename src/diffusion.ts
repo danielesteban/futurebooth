@@ -29,12 +29,11 @@ class Diffusion {
     const next = queue.entries().next();
     const { value: [key, queued] } = next;
     const { blob } = queued;
-    const result = await diffusers.diffusion(
-      blob,
+    const result = await diffusers.diffusion(blob, {
       prompt,
       negativePrompt,
-      strength
-    );
+      strength,
+    });
     if (queued.blob === blob) {
       queue.delete(key);
       queued.resolve(result);
