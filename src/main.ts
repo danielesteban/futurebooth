@@ -50,11 +50,13 @@ for (let y = 0; y < 3; y++) {
 document.addEventListener('contextmenu', (e) => e.preventDefault());
 
 const status: HTMLDivElement = document.getElementById('workers') as HTMLDivElement;
-const refreshStatus = () => {
-  diffusion.available().then((workers) => {
-    status.className = workers > 0 ? 'online' : 'offline';
-    status.innerText = `${workers} available workers`;
-  });
-};
+const refreshStatus = () => (
+  diffusion.available()
+    .then((workers) => {
+      status.className = workers > 0 ? 'online' : 'offline';
+      status.innerText = `${workers} available workers`;
+    })
+    .catch(() => {})
+);
 refreshStatus();
-setInterval(refreshStatus, 30000);
+setInterval(refreshStatus, 60000);
