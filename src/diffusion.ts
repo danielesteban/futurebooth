@@ -1,12 +1,19 @@
 import Diffusers from '@danielesteban/diffusers';
 
+type Options = {
+  negativePrompt: string;
+  prompt: string;
+  strength: number;
+};
+
 class Diffusion {
   private readonly diffusers: Diffusers = new Diffusers('799b65dd2681d9123862b618d038b86f');
-  private readonly queue: Map<any, { blob: Blob; resolve: (blob: Blob) => void; }> = new Map();
-
-  private prompt: string = '';
-  private negativePrompt: string = 'deformed, distorted, disfigured, poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, mutated hands and fingers, disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation.';
-  private strength: number = 0.9;
+  private options: Options = {
+    negativePrompt: 'deformed, distorted, disfigured, poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, mutated hands and fingers, disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation.',
+    prompt: '',
+    strength: 0.9,
+  };
+  private readonly queue: Map<any, { blob: Blob; options: Options, resolve: (blob: Blob) => void; }> = new Map();
 
   available() {
     return this.diffusers.available().then(({ diffusion }) => (diffusion));
@@ -14,14 +21,15 @@ class Diffusion {
 
   generate(key: any, blob: Blob) {
     return new Promise<Blob>((resolve) => {
-      const { queue } = this;
+      const { queue, options } = this;
       const queued = queue.get(key);
       if (queued) {
         queued.blob = blob;
+        queued.options = { ...options };
         queued.resolve = resolve;
         return;
       }
-      queue.set(key, { blob, resolve });
+      queue.set(key, { blob, options: { ...options }, resolve });
       if (queue.size === 1) {
         this.process();
       }
@@ -29,15 +37,11 @@ class Diffusion {
   }
 
   private async process() {
-    const { diffusers, queue, prompt, negativePrompt, strength } = this;
+    const { diffusers, queue } = this;
     const next = queue.entries().next();
     const { value: [key, queued] } = next;
-    const { blob } = queued;
-    const result = await diffusers.diffusion(blob, {
-      prompt,
-      negativePrompt,
-      strength,
-    });
+    const { blob, options } = queued;
+    const result = await diffusers.diffusion(blob, options);
     if (queued.blob === blob) {
       queue.delete(key);
       queued.resolve(result);
@@ -48,15 +52,15 @@ class Diffusion {
   }
 
   setNegativePrompt(prompt: string) {
-    this.negativePrompt = prompt;
+    this.options.negativePrompt = prompt;
   }
 
   setPrompt(prompt: string) {
-    this.prompt = prompt;
+    this.options.prompt = prompt;
   }
 
   setStrength(strength: number) {
-    this.strength = strength;
+    this.options.strength = strength;
   }
 }
 
