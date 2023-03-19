@@ -8,6 +8,10 @@ class Diffusion {
   private negativePrompt: string = 'deformed, distorted, disfigured, poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, mutated hands and fingers, disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation.';
   private strength: number = 0.9;
 
+  available() {
+    return this.diffusers.available().then(({ diffusion }) => (diffusion));
+  }
+
   generate(key: any, blob: Blob) {
     return new Promise<Blob>((resolve) => {
       const { queue } = this;

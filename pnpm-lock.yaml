@@ -41,7 +41,7 @@ devDependencies:
 packages:
 
   /@danielesteban/diffusers/0.0.2:
-    resolution: {integrity: sha512-z2w68AL1opaSkBMjtoGNj7RlBeJuvLqu1YcTrHM8IUQOtjtw2aByVwZA6NGm5/vnGpmmBK2fIHylayqBH8vB+A==, tarball: download/@danielesteban/diffusers/0.0.2/d5688b7faab0c108ed90266439a6328b91912441}
+    resolution: {integrity: sha512-XXys06H/+TW2TDpsU7P2FyjJwtZBbO/e6zzLihWY9936P8m0ngEjPVTWiNw/o67xu/hjh7y+fOEd6iXVJ9H0kQ==, tarball: download/@danielesteban/diffusers/0.0.2/97d16161b3401e8d4c235a16471d19f55888409d}
     dev: false
 
   /@jridgewell/gen-mapping/0.3.2:

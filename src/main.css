@@ -46,6 +46,27 @@ body, #app {
   text-align: right;
 }
 
+#diffusers {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+}
+
+#workers {
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #633;
+  border-radius: 0.5rem;
+  font-size: 0.8em;
+  background: #633;
+}
+
+#workers.online {
+  background: #363;
+}
+
 #grid, #grid > div {
   display: flex;
   flex-wrap: wrap;
