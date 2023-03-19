@@ -3,45 +3,54 @@ import 'spin.js/spin.css';
 
 class Frame {
   public readonly container: HTMLDivElement;
-  public readonly button: HTMLButtonElement;
+  private hasLoaded: boolean = false;
   private readonly image: HTMLImageElement;
   private readonly spinner: Spinner;
+  private readonly getBlob: () => Promise<Blob>;
+  private readonly getGenerated: (blob: Blob, frame: Frame) => Promise<Blob>;
 
-  constructor() {
-    this.button = document.createElement('button');
-    const icon = document.createElement('span');
-    icon.innerText = '>';
-    icon.style.display = 'block';
-    icon.style.transform = 'rotate(90deg)';
-    this.button.appendChild(icon);
-    this.button.addEventListener('click', this.download.bind(this));
+  constructor(
+    getBlob: () => Promise<Blob>,
+    getGenerated: (blob: Blob, frame: Frame) => Promise<Blob>
+  ) {
+    this.getBlob = getBlob;
+    this.getGenerated = getGenerated;
     this.container = document.createElement('div');
+    this.container.addEventListener('click', () => {
+      if (this.hasLoaded) {
+        this.download();
+      } else {
+        this.getBlob()
+          .then((blob) => {
+            this.setImage(blob, true);
+            return this.getGenerated(blob, this);
+          })
+          .then((blob) => {
+            this.setImage(blob);
+          });
+      }
+    });
     this.image = document.createElement('img');
     this.spinner = new Spinner({ color: '#eee' });
   }
 
-  private download(e: MouseEvent) {
+  private download() {
     const { image } = this;
-    e.stopPropagation();
     const downloader = document.createElement('a');
     downloader.href = image.src;
     downloader.download = 'futurebooth.png';
     downloader.click();
   }
 
-  setImage(blob: Blob) {
-    const { container, button, image } = this;
+  private setImage(blob: Blob, loading: boolean = false) {
+    const { container, image, spinner } = this;
+    this.hasLoaded = !loading;
     URL.revokeObjectURL(image.src);
     image.src = URL.createObjectURL(blob);
     if (image.parentNode !== container) {
       container.appendChild(image);
-      container.appendChild(button);
     }
-  }
-
-  setLoading(enabled: boolean) {
-    const { container, spinner } = this;
-    if (enabled) {
+    if (loading) {
       container.classList.add('loading');
       spinner.spin(container);
     } else {

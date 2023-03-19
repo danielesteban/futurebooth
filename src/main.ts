@@ -26,21 +26,11 @@ for (let y = 0; y < 3; y++) {
       group.appendChild(prompt);
     } else {
       for (let i = 0; i < 4; i++) {
-        const frame = new Frame();
+        const frame = new Frame(
+          () => viewport.getBlob(),
+          (blob: Blob, frame: Frame) => diffusion.generate(frame, blob)
+        );
         group.appendChild(frame.container);
-        frame.container.addEventListener('click', () => (
-          viewport.getBlob()
-            .then((blob) => {
-              frame.setImage(blob);
-              frame.setLoading(true);
-              diffusion
-                .generate(frame, blob)
-                .then((blob) => {
-                  frame.setImage(blob);
-                  frame.setLoading(false);
-                });
-            })
-        ));
         images.push(frame);
       }
     }
