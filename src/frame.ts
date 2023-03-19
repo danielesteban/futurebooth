@@ -6,28 +6,21 @@ class Frame {
   private hasLoaded: boolean = false;
   private readonly image: HTMLImageElement;
   private readonly spinner: Spinner;
-  private readonly getBlob: () => Promise<Blob>;
-  private readonly getGenerated: (blob: Blob, frame: Frame) => Promise<Blob>;
 
-  constructor(
-    getBlob: () => Promise<Blob>,
-    getGenerated: (blob: Blob, frame: Frame) => Promise<Blob>
-  ) {
-    this.getBlob = getBlob;
-    this.getGenerated = getGenerated;
+  constructor(generate: () => Promise<{ preview: Blob, generated: Promise<Blob> }>) {
     this.container = document.createElement('div');
     this.container.addEventListener('click', () => {
       if (this.hasLoaded) {
         this.download();
       } else {
-        this.getBlob()
-          .then((blob) => {
-            this.setImage(blob, true);
-            return this.getGenerated(blob, this);
+        generate()
+          .then(({ preview, generated }) => {
+            this.setImage(preview, true);
+            return generated;
           })
-          .then((blob) => {
-            this.setImage(blob);
-          });
+          .then((generated) => (
+            this.setImage(generated)
+          ));
       }
     });
     this.image = document.createElement('img');

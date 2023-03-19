@@ -26,10 +26,14 @@ for (let y = 0; y < 3; y++) {
       group.appendChild(prompt);
     } else {
       for (let i = 0; i < 4; i++) {
-        const frame = new Frame(
-          () => viewport.getBlob(),
-          (blob: Blob, frame: Frame) => diffusion.generate(frame, blob)
-        );
+        const key = {};
+        const frame = new Frame(() => (
+          viewport.getBlob()
+            .then((preview) => ({
+              preview,
+              generated: diffusion.generate(key, preview),
+            }))
+        ));
         group.appendChild(frame.container);
         images.push(frame);
       }
