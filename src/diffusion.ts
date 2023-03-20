@@ -11,7 +11,7 @@ class Diffusion {
   private options: Options = {
     negativePrompt: 'deformed, distorted, disfigured, poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, mutated hands and fingers, disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation.',
     prompt: '',
-    strength: 0.9,
+    strength: 1,
   };
   private readonly queue: Map<any, { blob: Blob; options: Options, resolve: (blob: Blob) => void; }> = new Map();
 
